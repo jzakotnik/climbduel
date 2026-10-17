@@ -446,7 +446,7 @@ const I18N={
   "g_short": "Track is too short.",
   "g_read": "Could not read this file.",
   "g_ok": "{0}: {1} km, {2} m net, {3} % average",
-  "g_roll": " (track has rolling terrain, so the average is net climb over the whole route)",
+  "g_okroll": "{0}: {1} km, {2} m total ascent, {3} % average (hilly or looped track: total ascent over total distance)",
   "title": "Climb Duel – Cycling Climb Time Calculator",
   "desc": "Compare two cyclists on the same hill. Enter distance, grade, weights and speed or watts to see who arrives first and by how long, in an animated replay.",
   "ogalt": "Two cyclists racing up a hill in the Climb Duel calculator, with the arrival time gap shown above",
@@ -562,7 +562,7 @@ const I18N={
   "g_short": "Der Track ist zu kurz.",
   "g_read": "Diese Datei konnte nicht gelesen werden.",
   "g_ok": "{0}: {1} km, {2} m netto, {3} % im Schnitt",
-  "g_roll": " (der Track ist wellig, daher ist der Durchschnitt der Nettoanstieg über die gesamte Strecke)",
+  "g_okroll": "{0}: {1} km, {2} m Gesamtanstieg, {3} % im Schnitt (welliger oder geschlossener Track: Gesamtanstieg über Gesamtstrecke)",
   "title": "Climb Duel – Anstiegszeit-Rechner für Radfahrer",
   "desc": "Vergleiche zwei Radfahrer am selben Berg. Gib Strecke, Steigung, Gewicht und Tempo oder Watt ein und sieh in einer animierten Wiederholung, wer zuerst oben ist und mit welchem Abstand.",
   "ogalt": "Zwei Radfahrer fahren im Climb-Duel-Rechner einen Berg hinauf, darüber der Zeitabstand im Ziel",
@@ -1089,7 +1089,7 @@ $('pspeed').addEventListener('change',e=>{ pmul=parseFloat(e.target.value); });
 let gpxMsg=null;
 function paintGpx(){
   const el=$('gpx-msg'); if(!el) return;
-  el.textContent=gpxMsg?t(gpxMsg.m.key,...(gpxMsg.m.args||[]))+(gpxMsg.m.roll?t('g_roll'):'')+(gpxMsg.m.args?'.':''):'';
+  el.textContent=gpxMsg?t(gpxMsg.m.key,...(gpxMsg.m.args||[]))+(gpxMsg.m.args?'.':''):'';
   el.className=gpxMsg&&gpxMsg.err?'err':'';
 }
 function parseGpx(text){
@@ -1131,11 +1131,12 @@ function parseGpx(text){
     rd.onload=()=>{
       try{
         const g=parseGpx(String(rd.result));
-        const grade=g.net/g.H*100, road=Math.sqrt(g.H*g.H+g.net*g.net)/1000;
+        const roll=g.up>Math.abs(g.net)*1.5, rise=roll?g.up:g.net;
+        const grade=rise/g.H*100, road=Math.sqrt(g.H*g.H+rise*rise)/1000;
         const dc=FIELDS.find(c=>c.id==='dist'), gc=FIELDS.find(c=>c.id==='grade');
         dc.set(clamp(Math.round(road*10)/10,dc.min,dc.max)); gc.set(clamp(Math.round(grade*10)/10,gc.min,gc.max));
         dc.show(); gc.show(); update();
-        say({key:'g_ok',args:[f.name,road.toFixed(1),(g.net>=0?'+':'−')+Math.round(Math.abs(g.net)),grade.toFixed(1)],roll:g.up>Math.abs(g.net)*1.5});
+        say({key:roll?'g_okroll':'g_ok',args:[f.name,road.toFixed(1),(rise>=0?'+':'−')+Math.round(Math.abs(rise)),grade.toFixed(1)]});
       }catch(e){ say({key:I18N.en[e.message]?e.message:'g_read'},true); }
       file.value='';
     };
