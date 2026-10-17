@@ -1,0 +1,5 @@
+# Climb Duel: crawling and indexing are welcome.
+User-agent: *
+Allow: /
+
+Sitemap: derjure.de/sitemap.xml
