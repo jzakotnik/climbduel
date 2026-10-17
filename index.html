@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Climb Duel – Cycling Climb Time Calculator</title>
-<meta name="description" content="Compare two cyclists on the same hill. Enter distance, grade, weights and speed or watts to see who arrives first and by how long, in an animated replay.">
+<title data-i18n="title">Climb Duel – Cycling Climb Time Calculator</title>
+<meta name="description" content="Compare two cyclists on the same hill. Enter distance, grade, weights and speed or watts to see who arrives first and by how long, in an animated replay." data-i18n-content="desc">
 <link rel="canonical" href="derjure.de/">
 <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1">
 <meta name="theme-color" content="#1b1bb5">
@@ -15,20 +15,20 @@
 
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Climb Duel">
-<meta property="og:title" content="Climb Duel – Cycling Climb Time Calculator">
-<meta property="og:description" content="Compare two cyclists on the same hill. Enter distance, grade, weights and speed or watts to see who arrives first and by how long, in an animated replay.">
+<meta property="og:title" content="Climb Duel – Cycling Climb Time Calculator" data-i18n-content="title">
+<meta property="og:description" content="Compare two cyclists on the same hill. Enter distance, grade, weights and speed or watts to see who arrives first and by how long, in an animated replay." data-i18n-content="desc">
 <meta property="og:url" content="derjure.de/">
 <meta property="og:image" content="derjure.de/og-image.png">
 <meta property="og:image:type" content="image/png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Two cyclists racing up a hill in the Climb Duel calculator, with the arrival time gap shown above">
-<meta property="og:locale" content="en_US">
+<meta property="og:image:alt" content="Two cyclists racing up a hill in the Climb Duel calculator, with the arrival time gap shown above" data-i18n-content="ogalt">
+<meta property="og:locale" content="en_US" data-i18n-content="locale">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Climb Duel – Cycling Climb Time Calculator">
-<meta name="twitter:description" content="Compare two cyclists on the same hill. Enter distance, grade, weights and speed or watts to see who arrives first and by how long, in an animated replay.">
+<meta name="twitter:title" content="Climb Duel – Cycling Climb Time Calculator" data-i18n-content="title">
+<meta name="twitter:description" content="Compare two cyclists on the same hill. Enter distance, grade, weights and speed or watts to see who arrives first and by how long, in an animated replay." data-i18n-content="desc">
 <meta name="twitter:image" content="derjure.de/og-image.png">
-<meta name="twitter:image:alt" content="Two cyclists racing up a hill in the Climb Duel calculator, with the arrival time gap shown above">
+<meta name="twitter:image:alt" content="Two cyclists racing up a hill in the Climb Duel calculator, with the arrival time gap shown above" data-i18n-content="ogalt">
 
 <link rel="icon" href="favicon.ico" sizes="48x48">
 <link rel="icon" href="favicon.svg" type="image/svg+xml" sizes="any">
@@ -199,6 +199,10 @@ body{padding-top:max(12px,env(safe-area-inset-top,0px));padding-bottom:calc(48px
 .faq p{color:var(--muted)}
 footer{border-top:1px solid var(--line);padding-top:18px;color:var(--muted);font:400 .8rem/1.5 var(--mono)}
 footer a{color:inherit;text-decoration:underline}footer a:focus-visible{outline:2px solid var(--muted);outline-offset:2px}
+.lang{display:flex;justify-content:flex-end;gap:6px}
+.lang button{font:500 .78rem/1 var(--mono);letter-spacing:.08em;padding:7px 12px;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--text);cursor:pointer}
+.lang button[aria-pressed=true]{background:#fff;color:var(--ink);border-color:#fff}
+.lang button:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
 .nojs{padding:14px 16px;border:1px solid var(--line);border-radius:14px;background:var(--panel)}
 </style>
 <script type="application/ld+json">
@@ -305,46 +309,47 @@ footer a{color:inherit;text-decoration:underline}footer a:focus-visible{outline:
 <body>
 <div class="wrap">
   <noscript><p class="nojs">Climb Duel needs JavaScript to calculate the race and play the replay.</p></noscript>
+  <nav class="lang" id="lang" aria-label="Language"><button type="button" data-lang="en" aria-pressed="true" lang="en" title="English">EN</button><button type="button" data-lang="de" aria-pressed="false" lang="de" title="Deutsch">DE</button></nav>
   <header class="top">
-    <h1>Climb <span>Duel</span><span class="sr"> – cycling climb time calculator</span></h1>
-    <p class="eyebrow">Cycling climb time calculator</p>
+    <h1>Climb <span>Duel</span><span class="sr" data-i18n="srtitle"> – cycling climb time calculator</span></h1>
+    <p class="eyebrow" data-i18n="eyebrow">Cycling climb time calculator</p>
   </header>
 
-  <section class="cockpit" aria-label="Result and settings">
+  <section class="cockpit" data-i18n-aria="a_cockpit" aria-label="Result and settings">
     <div class="verdict" id="verdict">
       <div>
-        <div class="v-kicker"><span class="dot"></span><span id="v-who">Rider A arrives first</span></div>
-        <div class="v-num"><span id="v-big">0:00</span><span class="v-unit" id="v-unit">min : sec</span></div>
+        <div class="v-kicker"><span class="dot"></span><span id="v-who"></span></div>
+        <div class="v-num"><span id="v-big">0:00</span><span class="v-unit" id="v-unit"></span></div>
         <p class="v-sub" id="v-gap"></p>
       </div>
       <div class="times">
-        <div class="c0"><div class="trow-h"><span class="nm"><i></i><span id="tn0">Rider A</span></span><span class="tm" id="tt0">0:00</span></div><div class="track"><div class="fill" id="tb0"></div></div></div>
-        <div class="c1"><div class="trow-h"><span class="nm"><i></i><span id="tn1">Rider B</span></span><span class="tm" id="tt1">0:00</span></div><div class="track"><div class="fill" id="tb1"></div></div></div>
+        <div class="c0"><div class="trow-h"><span class="nm"><i></i><span id="tn0"></span></span><span class="tm" id="tt0">0:00</span></div><div class="track"><div class="fill" id="tb0"></div></div></div>
+        <div class="c1"><div class="trow-h"><span class="nm"><i></i><span id="tn1"></span></span><span class="tm" id="tt1">0:00</span></div><div class="track"><div class="fill" id="tb1"></div></div></div>
       </div>
     </div>
 
-    <form class="controls" id="controls" aria-label="Settings">
+    <form class="controls" id="controls" data-i18n-aria="a_settings" aria-label="Settings">
       <div class="course">
-        <div class="cf"><label for="dist-n">Distance on road (km)</label><input class="in" id="dist-n" type="number" inputmode="decimal"><input type="range" id="dist-r" aria-label="Distance in km"></div>
-        <div class="cf"><label for="grade-n">Average grade (%)</label><input class="in" id="grade-n" type="number" inputmode="decimal"><input type="range" id="grade-r" aria-label="Grade in percent"></div>
+        <div class="cf"><label for="dist-n" data-i18n="l_dist">Distance on road (km)</label><input class="in" id="dist-n" type="number" inputmode="decimal"><input type="range" id="dist-r" data-i18n-aria="a_dist" aria-label="Distance in km"></div>
+        <div class="cf"><label for="grade-n" data-i18n="l_grade">Average grade (%)</label><input class="in" id="grade-n" type="number" inputmode="decimal"><input type="range" id="grade-r" data-i18n-aria="a_grade" aria-label="Grade in percent"></div>
       </div>
       <fieldset class="seg">
-        <legend>What you enter for each rider…</legend>
-        <label><input type="radio" name="mode" value="flat" checked><span>Flat pace</span></label>
-        <label><input type="radio" name="mode" value="power"><span>Watts</span></label>
-        <label><input type="radio" name="mode" value="slope"><span>Climb speed</span></label>
+        <legend data-i18n="legend">What you enter for each rider…</legend>
+        <label><input type="radio" name="mode" value="flat" checked><span data-i18n="m_flat">Flat pace</span></label>
+        <label><input type="radio" name="mode" value="power"><span data-i18n="m_power">Watts</span></label>
+        <label><input type="radio" name="mode" value="slope"><span data-i18n="m_slope">Climb speed</span></label>
       </fieldset>
       <div class="rig">
         <span></span>
-        <input class="nin a" id="a-name" maxlength="14" value="Rider A" aria-label="Name of rider A">
-        <input class="nin b" id="b-name" maxlength="14" value="Rider B" aria-label="Name of rider B">
-        <span class="rl">Rider (kg)</span>
-        <div class="cell a"><input class="in a" id="a-mass-n" type="number" inputmode="decimal" aria-label="Weight of rider A in kg"><input type="range" id="a-mass-r" aria-label="Weight of rider A in kg"></div>
-        <div class="cell b"><input class="in b" id="b-mass-n" type="number" inputmode="decimal" aria-label="Weight of rider B in kg"><input type="range" id="b-mass-r" aria-label="Weight of rider B in kg"></div>
-        <span class="rl">Bike (kg)</span>
-        <div class="cell a"><input class="in a" id="a-bike-n" type="number" inputmode="decimal" aria-label="Weight of bike A in kg"><input type="range" id="a-bike-r" aria-label="Weight of bike A in kg"></div>
-        <div class="cell b"><input class="in b" id="b-bike-n" type="number" inputmode="decimal" aria-label="Weight of bike B in kg"><input type="range" id="b-bike-r" aria-label="Weight of bike B in kg"></div>
-        <span class="rl" id="speed-label">Flat pace (km/h)</span>
+        <input class="nin a" id="a-name" maxlength="14" value="Rider A" data-i18n-aria="a_namea" aria-label="Name of rider A">
+        <input class="nin b" id="b-name" maxlength="14" value="Rider B" data-i18n-aria="a_nameb" aria-label="Name of rider B">
+        <span class="rl" data-i18n="l_rider">Rider (kg)</span>
+        <div class="cell a"><input class="in a" id="a-mass-n" type="number" inputmode="decimal" data-i18n-aria="a_massa" aria-label="Weight of rider A in kg"><input type="range" id="a-mass-r" data-i18n-aria="a_massa" aria-label="Weight of rider A in kg"></div>
+        <div class="cell b"><input class="in b" id="b-mass-n" type="number" inputmode="decimal" data-i18n-aria="a_massb" aria-label="Weight of rider B in kg"><input type="range" id="b-mass-r" data-i18n-aria="a_massb" aria-label="Weight of rider B in kg"></div>
+        <span class="rl" data-i18n="l_bike">Bike (kg)</span>
+        <div class="cell a"><input class="in a" id="a-bike-n" type="number" inputmode="decimal" data-i18n-aria="a_bikea" aria-label="Weight of bike A in kg"><input type="range" id="a-bike-r" data-i18n-aria="a_bikea" aria-label="Weight of bike A in kg"></div>
+        <div class="cell b"><input class="in b" id="b-bike-n" type="number" inputmode="decimal" data-i18n-aria="a_bikeb" aria-label="Weight of bike B in kg"><input type="range" id="b-bike-r" data-i18n-aria="a_bikeb" aria-label="Weight of bike B in kg"></div>
+        <span class="rl" id="speed-label"></span>
         <div class="cell a"><input class="in a" id="a-speed-n" type="number" inputmode="decimal" aria-label="Speed of rider A in km/h"><input type="range" id="a-speed-r" aria-label="Speed of rider A in km/h"></div>
         <div class="cell b"><input class="in b" id="b-speed-n" type="number" inputmode="decimal" aria-label="Speed of rider B in km/h"><input type="range" id="b-speed-r" aria-label="Speed of rider B in km/h"></div>
       </div>
@@ -353,66 +358,66 @@ footer a{color:inherit;text-decoration:underline}footer a:focus-visible{outline:
 
   <section class="stage" aria-label="Race replay">
     <div class="stage-bar">
-      <h2>Replay</h2>
-      <div class="live"><span>Race clock <b id="clock">0:00</b></span><span>Gap on the road <b id="liveGap">0 m</b></span></div>
+      <h2 data-i18n="h_replay">Replay</h2>
+      <div class="live"><span><span data-i18n="clock">Race clock</span> <b id="clock">0:00</b></span><span><span data-i18n="gaplive">Gap on the road</span> <b id="liveGap">0 m</b></span></div>
     </div>
-    <div class="canvas-wrap"><canvas id="race" role="img" aria-label="Animated replay of the two riders climbing the slope"></canvas></div>
+    <div class="canvas-wrap"><canvas id="race" role="img" aria-label=""></canvas></div>
     <p class="info" id="course-info"></p>
     <div class="ctrls">
       <button type="button" id="btn-play">Pause</button>
-      <button type="button" class="ghost" id="btn-replay">Replay</button>
-      <input class="grow" type="range" id="scrub" min="0" max="1000" value="100" aria-label="Race progress">
-      <label class="sp" for="pspeed">Playback
+      <button type="button" class="ghost" id="btn-replay" data-i18n="b_replay">Replay</button>
+      <input class="grow" type="range" id="scrub" min="0" max="1000" value="100" data-i18n-aria="a_prog" aria-label="Race progress">
+      <label class="sp" for="pspeed"><span data-i18n="playback">Playback</span>
         <select id="pspeed"><option value="0.5">x0.5</option><option value="1" selected>x1</option><option value="2">x2</option><option value="4">x4</option></select>
       </label>
     </div>
   </section>
 
   <section class="results">
-    <h2>The numbers</h2>
+    <h2 data-i18n="h_numbers">The numbers</h2>
     <p class="hint" id="mode-hint"></p>
     <div class="tablewrap"><table id="tbl"></table></div>
-    <div class="legend"><span><i class="sg"></i>Gravity</span><span><i class="sr"></i>Rolling resistance</span><span><i class="sa"></i>Air drag</span></div>
+    <div class="legend"><span><i class="sg"></i><span data-i18n="lg_g">Gravity</span></span><span><i class="sr"></i><span data-i18n="lg_r">Rolling resistance</span></span><span><i class="sa"></i><span data-i18n="lg_a">Air drag</span></span></div>
   </section>
 
   <details class="adv">
-    <summary>Advanced physics (same for both riders)</summary>
+    <summary data-i18n="adv">Advanced physics (same for both riders)</summary>
     <div class="adv-grid" id="f-adv"></div>
   </details>
 
   <section class="model">
-    <h2>How it is calculated</h2>
+    <h2 data-i18n="h_model">How it is calculated</h2>
     <div class="model-grid">
       <div style="display:flex;flex-direction:column;gap:14px;min-width:0">
         <pre class="formula">η · P = v · [ m·g·(sin θ + Crr·cos θ) + ½·ρ·CdA·v² ]</pre>
-        <p>P is the power at the pedals and η the drivetrain efficiency. Gravity, rolling resistance and air drag are the three forces the rider pushes against, and their sum times speed is the power the wheel must deliver. Solving for v gives the steady climbing speed. Time is the distance along the road divided by v.</p>
+        <p data-i18n="mp">P is the power at the pedals and η the drivetrain efficiency. Gravity, rolling resistance and air drag are the three forces the rider pushes against, and their sum times speed is the power the wheel must deliver. Solving for v gives the steady climbing speed. Time is the distance along the road divided by v.</p>
       </div>
       <ul>
-        <li>m is rider plus bike. θ = arctan(grade ÷ 100), so a 6% grade is 3.4°. Distance is measured along the road.</li>
-        <li>Flat-pace mode: the pace you enter is plugged in with θ = 0 to find the power you can hold. That same power is then used on the slope and the cubic is solved for v.</li>
-        <li>Watts mode: the average power you enter at the pedals is used directly on the slope and the cubic is solved for v. With equal watts the heavier rider is slower.</li>
-        <li>Climb-speed mode: the speed is fixed and the equation gives the power it costs. A negative result means gravity does the work and the rider can coast.</li>
-        <li>Not modelled: wind (air speed equals ground speed), standing starts, wheel inertia, drafting, braking and posture changes.</li>
+        <li data-i18n="li0">m is rider plus bike. θ = arctan(grade ÷ 100), so a 6% grade is 3.4°. Distance is measured along the road.</li>
+        <li data-i18n="li1">Flat-pace mode: the pace you enter is plugged in with θ = 0 to find the power you can hold. That same power is then used on the slope and the cubic is solved for v.</li>
+        <li data-i18n="li2">Watts mode: the average power you enter at the pedals is used directly on the slope and the cubic is solved for v. With equal watts the heavier rider is slower.</li>
+        <li data-i18n="li3">Climb-speed mode: the speed is fixed and the equation gives the power it costs. A negative result means gravity does the work and the rider can coast.</li>
+        <li data-i18n="li4">Not modelled: wind (air speed equals ground speed), standing starts, wheel inertia, drafting, braking and posture changes.</li>
       </ul>
     </div>
   </section>
 
   <section class="faq" id="faq">
-    <h2>Questions and answers</h2>
+    <h2 data-i18n="h_faq">Questions and answers</h2>
     <div class="faq-grid">
-      <div><h3>How does Climb Duel calculate the time to the top?</h3><p>It balances the rider’s pedalling power against gravity, rolling resistance and air drag, then solves for the steady speed on the slope. Time is the distance along the road divided by that speed.</p></div>
-      <div><h3>What does “pace on flat road” mean?</h3><p>It is the speed a rider holds on level ground. Climb Duel uses it to work out the power that rider can sustain, then applies the same power on the hill. If you know your power or your climbing speed instead, choose “Watts” or “Climb speed”.</p></div>
-      <div><h3>Can I enter my power in watts?</h3><p>Yes. Choose “Watts” and enter the average power each rider pushes at the pedals. Climb Duel then solves the speed on the slope for that power, so weight and grade decide who is faster. The results table also shows watts per kilogram.</p></div>
-      <div><h3>Does a lighter bike or a lighter rider matter more on a climb?</h3><p>Gravity acts on the total mass, so one kilogram less on the bike helps exactly as much as one kilogram less on the rider. What differs is how easy each kilogram is to change. The results table shows the time that one extra kilogram costs each rider.</p></div>
-      <div><h3>Does the calculator include wind or drafting?</h3><p>No. It assumes still air, a steady speed and no drafting, so both riders are compared under the same simple conditions. Real rides also depend on wind, road surface, standing starts and braking.</p></div>
-      <div><h3>What are drag area (CdA) and rolling resistance (Crr)?</h3><p>CdA is the frontal area a rider presents to the air multiplied by a drag coefficient. Crr describes how much the tyres resist rolling. The defaults, 0.32 m² and 0.005, are typical for a road bike on smooth tarmac. Change them under Advanced physics.</p></div>
-      <div><h3>How accurate are the results?</h3><p>They are estimates from the standard steady-state power equation. Accuracy depends on realistic values for drag area (CdA), rolling resistance and drivetrain efficiency, which you can change under Advanced physics.</p></div>
-      <div><h3>Why is the slope in the replay steeper than my grade?</h3><p>The replay exaggerates the slope so that a gentle grade such as 3% is still easy to see. The calculation always uses the exact grade you enter.</p></div>
-      <div><h3>Is my data stored or sent anywhere?</h3><p>No. All calculations run in your browser and nothing you enter leaves your device.</p></div>
+      <div><h3 data-i18n="q0">How does Climb Duel calculate the time to the top?</h3><p data-i18n="a0">It balances the rider’s pedalling power against gravity, rolling resistance and air drag, then solves for the steady speed on the slope. Time is the distance along the road divided by that speed.</p></div>
+      <div><h3 data-i18n="q1">What does “pace on flat road” mean?</h3><p data-i18n="a1">It is the speed a rider holds on level ground. Climb Duel uses it to work out the power that rider can sustain, then applies the same power on the hill. If you know your power or your climbing speed instead, choose “Watts” or “Climb speed”.</p></div>
+      <div><h3 data-i18n="q2">Can I enter my power in watts?</h3><p data-i18n="a2">Yes. Choose “Watts” and enter the average power each rider pushes at the pedals. Climb Duel then solves the speed on the slope for that power, so weight and grade decide who is faster. The results table also shows watts per kilogram.</p></div>
+      <div><h3 data-i18n="q3">Does a lighter bike or a lighter rider matter more on a climb?</h3><p data-i18n="a3">Gravity acts on the total mass, so one kilogram less on the bike helps exactly as much as one kilogram less on the rider. What differs is how easy each kilogram is to change. The results table shows the time that one extra kilogram costs each rider.</p></div>
+      <div><h3 data-i18n="q4">Does the calculator include wind or drafting?</h3><p data-i18n="a4">No. It assumes still air, a steady speed and no drafting, so both riders are compared under the same simple conditions. Real rides also depend on wind, road surface, standing starts and braking.</p></div>
+      <div><h3 data-i18n="q5">What are drag area (CdA) and rolling resistance (Crr)?</h3><p data-i18n="a5">CdA is the frontal area a rider presents to the air multiplied by a drag coefficient. Crr describes how much the tyres resist rolling. The defaults, 0.32 m² and 0.005, are typical for a road bike on smooth tarmac. Change them under Advanced physics.</p></div>
+      <div><h3 data-i18n="q6">How accurate are the results?</h3><p data-i18n="a6">They are estimates from the standard steady-state power equation. Accuracy depends on realistic values for drag area (CdA), rolling resistance and drivetrain efficiency, which you can change under Advanced physics.</p></div>
+      <div><h3 data-i18n="q7">Why is the slope in the replay steeper than my grade?</h3><p data-i18n="a7">The replay exaggerates the slope so that a gentle grade such as 3% is still easy to see. The calculation always uses the exact grade you enter.</p></div>
+      <div><h3 data-i18n="q8">Is my data stored or sent anywhere?</h3><p data-i18n="a8">No. All calculations run in your browser and nothing you enter leaves your device.</p></div>
     </div>
   </section>
 
-  <footer>Climb Duel · steady-state climbing model in still air. Results are estimates for comparing two riders. · <a href="impressum.html">Impressum</a> · <a href="https://github.com/jzakotnik" rel="noopener">GitHub</a></footer>
+  <footer><span data-i18n="foot">Climb Duel · steady-state climbing model in still air. Results are estimates for comparing two riders.</span> · <a href="impressum.html">Impressum</a> · <a href="https://github.com/jzakotnik" rel="noopener">GitHub</a></footer>
 </div>
 <script>
 (function(){
@@ -424,15 +429,239 @@ const clamp=(v,a,b)=>Math.min(b,Math.max(a,v));
 const pad=n=>String(n).padStart(2,'0');
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const COL=['#d6ff3f','#ff9d57'];
-const DEF_NAMES=['Rider A','Rider B'];
+const DEF_KEYS=['riderA','riderB'];
+
+/* ---------- localisation (en default, de) ---------- */
+const I18N={
+ "en": {
+  "title": "Climb Duel – Cycling Climb Time Calculator",
+  "desc": "Compare two cyclists on the same hill. Enter distance, grade, weights and speed or watts to see who arrives first and by how long, in an animated replay.",
+  "ogalt": "Two cyclists racing up a hill in the Climb Duel calculator, with the arrival time gap shown above",
+  "locale": "en_US",
+  "srtitle": " – cycling climb time calculator",
+  "eyebrow": "Cycling climb time calculator",
+  "a_cockpit": "Result and settings",
+  "a_settings": "Settings",
+  "l_dist": "Distance on road (km)",
+  "a_dist": "Distance in km",
+  "l_grade": "Average grade (%)",
+  "a_grade": "Grade in percent",
+  "legend": "What you enter for each rider…",
+  "m_flat": "Flat pace",
+  "m_power": "Watts",
+  "m_slope": "Climb speed",
+  "a_namea": "Name of rider A",
+  "a_massa": "Weight of rider A in kg",
+  "a_bikea": "Weight of bike A in kg",
+  "a_nameb": "Name of rider B",
+  "a_massb": "Weight of rider B in kg",
+  "a_bikeb": "Weight of bike B in kg",
+  "l_rider": "Rider (kg)",
+  "l_bike": "Bike (kg)",
+  "h_replay": "Replay",
+  "clock": "Race clock",
+  "gaplive": "Gap on the road",
+  "b_replay": "Replay",
+  "a_prog": "Race progress",
+  "playback": "Playback",
+  "h_numbers": "The numbers",
+  "lg_g": "Gravity",
+  "lg_r": "Rolling resistance",
+  "lg_a": "Air drag",
+  "adv": "Advanced physics (same for both riders)",
+  "h_model": "How it is calculated",
+  "h_faq": "Questions and answers",
+  "mp": "P is the power at the pedals and η the drivetrain efficiency. Gravity, rolling resistance and air drag are the three forces the rider pushes against, and their sum times speed is the power the wheel must deliver. Solving for v gives the steady climbing speed. Time is the distance along the road divided by v.",
+  "li0": "m is rider plus bike. θ = arctan(grade ÷ 100), so a 6% grade is 3.4°. Distance is measured along the road.",
+  "li1": "Flat-pace mode: the pace you enter is plugged in with θ = 0 to find the power you can hold. That same power is then used on the slope and the cubic is solved for v.",
+  "li2": "Watts mode: the average power you enter at the pedals is used directly on the slope and the cubic is solved for v. With equal watts the heavier rider is slower.",
+  "li3": "Climb-speed mode: the speed is fixed and the equation gives the power it costs. A negative result means gravity does the work and the rider can coast.",
+  "li4": "Not modelled: wind (air speed equals ground speed), standing starts, wheel inertia, drafting, braking and posture changes.",
+  "q0": "How does Climb Duel calculate the time to the top?",
+  "a0": "It balances the rider’s pedalling power against gravity, rolling resistance and air drag, then solves for the steady speed on the slope. Time is the distance along the road divided by that speed.",
+  "q1": "What does “pace on flat road” mean?",
+  "a1": "It is the speed a rider holds on level ground. Climb Duel uses it to work out the power that rider can sustain, then applies the same power on the hill. If you know your power or your climbing speed instead, choose “Watts” or “Climb speed”.",
+  "q2": "Can I enter my power in watts?",
+  "a2": "Yes. Choose “Watts” and enter the average power each rider pushes at the pedals. Climb Duel then solves the speed on the slope for that power, so weight and grade decide who is faster. The results table also shows watts per kilogram.",
+  "q3": "Does a lighter bike or a lighter rider matter more on a climb?",
+  "a3": "Gravity acts on the total mass, so one kilogram less on the bike helps exactly as much as one kilogram less on the rider. What differs is how easy each kilogram is to change. The results table shows the time that one extra kilogram costs each rider.",
+  "q4": "Does the calculator include wind or drafting?",
+  "a4": "No. It assumes still air, a steady speed and no drafting, so both riders are compared under the same simple conditions. Real rides also depend on wind, road surface, standing starts and braking.",
+  "q5": "What are drag area (CdA) and rolling resistance (Crr)?",
+  "a5": "CdA is the frontal area a rider presents to the air multiplied by a drag coefficient. Crr describes how much the tyres resist rolling. The defaults, 0.32 m² and 0.005, are typical for a road bike on smooth tarmac. Change them under Advanced physics.",
+  "q6": "How accurate are the results?",
+  "a6": "They are estimates from the standard steady-state power equation. Accuracy depends on realistic values for drag area (CdA), rolling resistance and drivetrain efficiency, which you can change under Advanced physics.",
+  "q7": "Why is the slope in the replay steeper than my grade?",
+  "a7": "The replay exaggerates the slope so that a gentle grade such as 3% is still easy to see. The calculation always uses the exact grade you enter.",
+  "q8": "Is my data stored or sent anywhere?",
+  "a8": "No. All calculations run in your browser and nothing you enter leaves your device.",
+  "foot": "Climb Duel · steady-state climbing model in still air. Results are estimates for comparing two riders.",
+  "riderA": "Rider A",
+  "riderB": "Rider B",
+  "sec": "seconds",
+  "minsec": "min : sec",
+  "hms": "h : min : sec",
+  "f_flat": "Flat pace (km/h)",
+  "f_power": "Power (W)",
+  "f_slope": "Climb speed (km/h)",
+  "x_flat": "Flat-road pace of rider X in km/h",
+  "x_power": "Power of rider X in watts",
+  "x_slope": "Climb speed of rider X in km/h",
+  "h_flat": "Flat pace mode: the pace you enter on flat road sets the leg power you can hold. The hill then decides how fast you really go. Switching modes converts your values so the result stays the same.",
+  "h_power": "Watts mode: you enter the average power each rider pushes at the pedals. Weight and grade then decide the speed. Switching modes converts your values so the result stays the same.",
+  "h_slope": "Climb speed mode: you hold exactly the speed you enter on the climb. Weight then decides how many watts it costs. Switching modes converts your values so the result stays the same.",
+  "t_speed": "Speed on the climb",
+  "t_time": "Time to the finish",
+  "t_power": "Leg power",
+  "t_coast": "0 W (coasting)",
+  "t_wkg": "Power per kg of rider",
+  "t_mass": "Total mass (rider + bike)",
+  "t_energy": "Energy at the pedals",
+  "t_pluskt": "Time cost of 1 extra kg",
+  "t_plusp": "Power cost of 1 extra kg",
+  "t_rider": "Per rider",
+  "t_where": "Where the effort goes",
+  "t_split": "gravity · rolling · air",
+  "v_first": "{0} arrives first",
+  "v_tie": "Dead heat",
+  "v_tiegap": "Both riders reach the finish together.",
+  "v_gap": "{0} is still {1} from the finish when {2} crosses the line.",
+  "ci_flat": "Flat course",
+  "ci_climb": "Climb +",
+  "ci_desc": "Descent −",
+  "ci_over": "{0} over {1} km. The slope in the replay is drawn steeper than it is.",
+  "ra_tie": "Animated replay: dead heat",
+  "ra_win": "Animated replay: {0} finishes {1} {2} ahead of {3}",
+  "start": "START",
+  "finish": "FINISH",
+  "play": "Play",
+  "pause": "Pause",
+  "fl_cda": "Drag area CdA",
+  "fl_crr": "Rolling resistance Crr",
+  "fl_eta": "Drivetrain efficiency",
+  "fl_rho": "Air density"
+ },
+ "de": {
+  "title": "Climb Duel – Anstiegszeit-Rechner für Radfahrer",
+  "desc": "Vergleiche zwei Radfahrer am selben Berg. Gib Strecke, Steigung, Gewicht und Tempo oder Watt ein und sieh in einer animierten Wiederholung, wer zuerst oben ist und mit welchem Abstand.",
+  "ogalt": "Zwei Radfahrer fahren im Climb-Duel-Rechner einen Berg hinauf, darüber der Zeitabstand im Ziel",
+  "locale": "de_DE",
+  "srtitle": " – Anstiegszeit-Rechner für Radfahrer",
+  "eyebrow": "Anstiegszeit-Rechner für Radfahrer",
+  "a_cockpit": "Ergebnis und Einstellungen",
+  "a_settings": "Einstellungen",
+  "l_dist": "Strecke auf der Straße (km)",
+  "a_dist": "Strecke in km",
+  "l_grade": "Mittlere Steigung (%)",
+  "a_grade": "Steigung in Prozent",
+  "legend": "Was du für jeden Fahrer eingibst …",
+  "m_flat": "Tempo in der Ebene",
+  "m_power": "Watt",
+  "m_slope": "Bergtempo",
+  "a_namea": "Name von Fahrer A",
+  "a_massa": "Gewicht von Fahrer A in kg",
+  "a_bikea": "Gewicht von Rad A in kg",
+  "a_nameb": "Name von Fahrer B",
+  "a_massb": "Gewicht von Fahrer B in kg",
+  "a_bikeb": "Gewicht von Rad B in kg",
+  "l_rider": "Fahrer (kg)",
+  "l_bike": "Rad (kg)",
+  "h_replay": "Wiederholung",
+  "clock": "Rennuhr",
+  "gaplive": "Abstand auf der Straße",
+  "b_replay": "Neustart",
+  "a_prog": "Rennfortschritt",
+  "playback": "Wiedergabe",
+  "h_numbers": "Die Zahlen",
+  "lg_g": "Schwerkraft",
+  "lg_r": "Rollwiderstand",
+  "lg_a": "Luftwiderstand",
+  "adv": "Erweiterte Physik (für beide Fahrer gleich)",
+  "h_model": "So wird gerechnet",
+  "h_faq": "Fragen und Antworten",
+  "mp": "P ist die Leistung an den Pedalen und η der Wirkungsgrad des Antriebs. Schwerkraft, Rollwiderstand und Luftwiderstand sind die drei Kräfte, gegen die der Fahrer drückt; ihre Summe mal Geschwindigkeit ist die Leistung, die das Rad liefern muss. Löst man nach v auf, erhält man die gleichmäßige Bergfahrtgeschwindigkeit. Die Zeit ist die Strecke geteilt durch v.",
+  "li0": "m ist Fahrer plus Rad. θ = arctan(Steigung ÷ 100), eine Steigung von 6 % entspricht also 3,4°. Die Strecke wird entlang der Straße gemessen.",
+  "li1": "Modus Tempo in der Ebene: Das eingegebene Tempo wird mit θ = 0 eingesetzt, um die Leistung zu bestimmen, die du halten kannst. Dieselbe Leistung wird dann am Berg verwendet und die kubische Gleichung nach v gelöst.",
+  "li2": "Modus Watt: Die eingegebene mittlere Leistung an den Pedalen wird direkt am Berg verwendet und die kubische Gleichung nach v gelöst. Bei gleichen Watt ist der schwerere Fahrer langsamer.",
+  "li3": "Modus Bergtempo: Die Geschwindigkeit ist vorgegeben und die Gleichung liefert die Leistung, die sie kostet. Ein negatives Ergebnis bedeutet, dass die Schwerkraft die Arbeit übernimmt und der Fahrer rollen kann.",
+  "li4": "Nicht berücksichtigt: Wind (Luftgeschwindigkeit gleich Bodengeschwindigkeit), Stehstarts, Trägheit der Laufräder, Windschattenfahren, Bremsen und Haltungswechsel.",
+  "q0": "Wie berechnet Climb Duel die Zeit bis nach oben?",
+  "a0": "Es setzt die Tretleistung des Fahrers ins Gleichgewicht mit Schwerkraft, Rollwiderstand und Luftwiderstand und löst dann nach der gleichmäßigen Geschwindigkeit am Berg auf. Die Zeit ist die Strecke entlang der Straße geteilt durch diese Geschwindigkeit.",
+  "q1": "Was bedeutet „Tempo in der Ebene“?",
+  "a1": "Es ist die Geschwindigkeit, die ein Fahrer auf flacher Straße hält. Climb Duel berechnet daraus die Leistung, die dieser Fahrer dauerhaft treten kann, und setzt dieselbe Leistung am Berg ein. Kennst du stattdessen deine Leistung oder dein Bergtempo, wähle „Watt“ oder „Bergtempo“.",
+  "q2": "Kann ich meine Leistung in Watt eingeben?",
+  "a2": "Ja. Wähle „Watt“ und gib die mittlere Leistung ein, die jeder Fahrer an den Pedalen tritt. Climb Duel löst dann die Geschwindigkeit am Berg für diese Leistung, sodass Gewicht und Steigung entscheiden, wer schneller ist. Die Ergebnistabelle zeigt auch Watt pro Kilogramm.",
+  "q3": "Zählt ein leichteres Rad oder ein leichterer Fahrer am Berg mehr?",
+  "a3": "Die Schwerkraft wirkt auf die Gesamtmasse, ein Kilogramm weniger am Rad hilft also genau so viel wie ein Kilogramm weniger am Fahrer. Unterschiedlich ist, wie leicht sich jedes Kilogramm verändern lässt. Die Ergebnistabelle zeigt die Zeit, die ein zusätzliches Kilogramm jeden Fahrer kostet.",
+  "q4": "Berücksichtigt der Rechner Wind oder Windschatten?",
+  "a4": "Nein. Er geht von ruhiger Luft, gleichmäßigem Tempo und keinem Windschatten aus, damit beide Fahrer unter denselben einfachen Bedingungen verglichen werden. Echte Fahrten hängen außerdem von Wind, Straßenbelag, Stehstarts und Bremsen ab.",
+  "q5": "Was sind Luftwiderstandsfläche (CdA) und Rollwiderstand (Crr)?",
+  "a5": "CdA ist die Stirnfläche, die ein Fahrer der Luft bietet, multipliziert mit einem Luftwiderstandsbeiwert. Crr beschreibt, wie stark die Reifen dem Rollen widerstehen. Die Standardwerte 0,32 m² und 0,005 sind typisch für ein Rennrad auf glattem Asphalt. Du kannst sie unter „Erweiterte Physik“ ändern.",
+  "q6": "Wie genau sind die Ergebnisse?",
+  "a6": "Es sind Schätzungen auf Basis der üblichen Leistungsgleichung im stationären Zustand. Die Genauigkeit hängt von realistischen Werten für Luftwiderstandsfläche (CdA), Rollwiderstand und Wirkungsgrad des Antriebs ab, die du unter „Erweiterte Physik“ ändern kannst.",
+  "q7": "Warum ist die Steigung in der Wiederholung steiler als meine Eingabe?",
+  "a7": "Die Wiederholung überzeichnet die Steigung, damit auch eine sanfte Steigung wie 3 % gut sichtbar ist. Die Berechnung verwendet immer die genaue Steigung, die du eingibst.",
+  "q8": "Werden meine Daten gespeichert oder irgendwohin gesendet?",
+  "a8": "Nein. Alle Berechnungen laufen in deinem Browser und nichts, was du eingibst, verlässt dein Gerät.",
+  "foot": "Climb Duel · stationäres Steigungsmodell bei Windstille. Die Ergebnisse sind Schätzungen zum Vergleich zweier Fahrer.",
+  "riderA": "Fahrer A",
+  "riderB": "Fahrer B",
+  "sec": "Sekunden",
+  "minsec": "Min : Sek",
+  "hms": "Std : Min : Sek",
+  "f_flat": "Tempo in der Ebene (km/h)",
+  "f_power": "Leistung (W)",
+  "f_slope": "Bergtempo (km/h)",
+  "x_flat": "Tempo von Fahrer X in der Ebene in km/h",
+  "x_power": "Leistung von Fahrer X in Watt",
+  "x_slope": "Bergtempo von Fahrer X in km/h",
+  "h_flat": "Modus Tempo in der Ebene: Das Tempo, das du auf flacher Straße eingibst, bestimmt die Beinleistung, die du halten kannst. Der Berg entscheidet dann, wie schnell du wirklich bist. Beim Wechsel des Modus werden deine Werte so umgerechnet, dass das Ergebnis gleich bleibt.",
+  "h_power": "Modus Watt: Du gibst die mittlere Leistung ein, die jeder Fahrer an den Pedalen tritt. Gewicht und Steigung entscheiden dann über die Geschwindigkeit. Beim Wechsel des Modus werden deine Werte so umgerechnet, dass das Ergebnis gleich bleibt.",
+  "h_slope": "Modus Bergtempo: Du fährst am Berg genau das eingegebene Tempo. Das Gewicht entscheidet dann, wie viele Watt es kostet. Beim Wechsel des Modus werden deine Werte so umgerechnet, dass das Ergebnis gleich bleibt.",
+  "t_speed": "Geschwindigkeit am Berg",
+  "t_time": "Zeit bis ins Ziel",
+  "t_power": "Beinleistung",
+  "t_coast": "0 W (Rollen)",
+  "t_wkg": "Leistung pro kg Fahrergewicht",
+  "t_mass": "Gesamtmasse (Fahrer + Rad)",
+  "t_energy": "Energie an den Pedalen",
+  "t_pluskt": "Zeitkosten für 1 kg mehr",
+  "t_plusp": "Leistungskosten für 1 kg mehr",
+  "t_rider": "Pro Fahrer",
+  "t_where": "Wohin die Anstrengung geht",
+  "t_split": "Schwerkraft · Rollen · Luft",
+  "v_first": "{0} kommt zuerst an",
+  "v_tie": "Zeitgleich",
+  "v_tiegap": "Beide Fahrer erreichen das Ziel gleichzeitig.",
+  "v_gap": "{0} ist noch {1} vom Ziel entfernt, wenn {2} die Ziellinie überquert.",
+  "ci_flat": "Flache Strecke",
+  "ci_climb": "Anstieg +",
+  "ci_desc": "Abfahrt −",
+  "ci_over": "{0} auf {1} km. Die Steigung in der Wiederholung ist steiler gezeichnet, als sie ist.",
+  "ra_tie": "Animierte Wiederholung: zeitgleich",
+  "ra_win": "Animierte Wiederholung: {0} erreicht das Ziel {1} {2} vor {3}",
+  "start": "START",
+  "finish": "ZIEL",
+  "play": "Start",
+  "pause": "Pause",
+  "fl_cda": "Luftwiderstandsfläche CdA",
+  "fl_crr": "Rollwiderstand Crr",
+  "fl_eta": "Wirkungsgrad des Antriebs",
+  "fl_rho": "Luftdichte"
+ }
+};
+let lang='en';
+try{ const q=new URLSearchParams(location.search).get('lang'); const st=q||localStorage.getItem('cd-lang'); if(st==='de'||st==='en') lang=st; }catch(e){}
+const t=(k,...a)=>{ let v=(I18N[lang]&&I18N[lang][k]); if(v===undefined) v=I18N.en[k]; if(v===undefined) return k; return v.replace(/\{(\d)\}/g,(m,i)=>a[i]); };
+const customName=[false,false];
 
 /* ---------- state (example values, all editable) ---------- */
 const S={
   dist:10, grade:6, mode:'flat',
   cda:0.32, crr:0.005, eta:97.5, rho:1.225,
   riders:[
-    {name:'Rider A',mass:72,bike:7.2,speed:30},
-    {name:'Rider B',mass:82,bike:11,speed:31}
+    {name:'',mass:72,bike:7.2,speed:30},
+    {name:'',mass:82,bike:11,speed:31}
   ]
 };
 let R=[];
@@ -484,11 +713,11 @@ function fmtClock(sec){
 }
 function fmtDist(m){ return m<1000?Math.round(m)+' m':(m/1000).toFixed(2)+' km'; }
 function heroParts(d){
-  if(d<0.05) return {num:'0.0',unit:'seconds'};
-  if(d<60) return {num:d.toFixed(1),unit:'seconds'};
-  const t=Math.round(d);
-  if(t<3600) return {num:Math.floor(t/60)+':'+pad(t%60),unit:'min : sec'};
-  return {num:Math.floor(t/3600)+':'+pad(Math.floor(t%3600/60))+':'+pad(t%60),unit:'h : min : sec'};
+  if(d<0.05) return {num:'0.0',unit:t('sec')};
+  if(d<60) return {num:d.toFixed(1),unit:t('sec')};
+  const q=Math.round(d);
+  if(q<3600) return {num:Math.floor(q/60)+':'+pad(q%60),unit:t('minsec')};
+  return {num:Math.floor(q/3600)+':'+pad(Math.floor(q%3600/60))+':'+pad(q%60),unit:t('hms')};
 }
 let shown=null, tw=0;
 function paintHero(d){ const p=heroParts(d); $('v-big').textContent=p.num; $('v-unit').textContent=p.unit; }
@@ -517,17 +746,17 @@ const FIELDS=[
   );
 });
 FIELDS.push(
-  {id:'cda',host:'f-adv',label:'Drag area CdA',unit:'m²',min:0.15,max:0.6,step:0.005,get:()=>S.cda,set:v=>{S.cda=v;}},
-  {id:'crr',host:'f-adv',label:'Rolling resistance Crr',unit:'',min:0.002,max:0.015,step:0.0005,get:()=>S.crr,set:v=>{S.crr=v;}},
-  {id:'eta',host:'f-adv',label:'Drivetrain efficiency',unit:'%',min:90,max:100,step:0.5,get:()=>S.eta,set:v=>{S.eta=v;}},
-  {id:'rho',host:'f-adv',label:'Air density',unit:'kg/m³',min:0.9,max:1.35,step:0.005,get:()=>S.rho,set:v=>{S.rho=v;}}
+  {id:'cda',host:'f-adv',key:'fl_cda',unit:'m²',min:0.15,max:0.6,step:0.005,get:()=>S.cda,set:v=>{S.cda=v;}},
+  {id:'crr',host:'f-adv',key:'fl_crr',unit:'',min:0.002,max:0.015,step:0.0005,get:()=>S.crr,set:v=>{S.crr=v;}},
+  {id:'eta',host:'f-adv',key:'fl_eta',unit:'%',min:90,max:100,step:0.5,get:()=>S.eta,set:v=>{S.eta=v;}},
+  {id:'rho',host:'f-adv',key:'fl_rho',unit:'kg/m³',min:0.9,max:1.35,step:0.005,get:()=>S.rho,set:v=>{S.rho=v;}}
 );
 const decimals=c=>{const s=String(c.step).split('.')[1];return s?s.length:0;};
 function makeField(c){
   let r=null;
   if(c.host){
     const w=document.createElement('div'); w.className='fld';
-    w.innerHTML='<div class="fld-top"><label for="'+c.id+'-n">'+c.label+'</label><span class="num"><input id="'+c.id+'-n" type="number" inputmode="decimal"><i>'+c.unit+'</i></span></div><input id="'+c.id+'-r" type="range" min="'+c.min+'" max="'+c.max+'" step="'+c.step+'" aria-label="'+c.label+'">';
+    w.innerHTML='<div class="fld-top"><label for="'+c.id+'-n" data-i18n="'+c.key+'"></label><span class="num"><input id="'+c.id+'-n" type="number" inputmode="decimal"><i>'+c.unit+'</i></span></div><input id="'+c.id+'-r" type="range" min="'+c.min+'" max="'+c.max+'" step="'+c.step+'" data-i18n-aria="'+c.key+'">';
     $(c.host).appendChild(w);
     r=$(c.id+'-r');
   }
@@ -548,27 +777,22 @@ function makeField(c){
 
 /* Range, unit and wording of the per-rider input depend on the mode. */
 const RANGES={
-  flat:{min:3,max:60,step:0.1,label:'Flat pace (km/h)',aria:'Flat-road pace of rider X in km/h'},
-  power:{min:40,max:800,step:1,label:'Power (W)',aria:'Power of rider X in watts'},
-  slope:{min:3,max:60,step:0.1,label:'Climb speed (km/h)',aria:'Climb speed of rider X in km/h'}
-};
-const HINTS={
-  flat:'Flat pace mode: the pace you enter on flat road sets the leg power you can hold. The hill then decides how fast you really go. Switching modes converts your values so the result stays the same.',
-  power:'Watts mode: you enter the average power each rider pushes at the pedals. Weight and grade then decide the speed. Switching modes converts your values so the result stays the same.',
-  slope:'Climb speed mode: you hold exactly the speed you enter on the climb. Weight then decides how many watts it costs. Switching modes converts your values so the result stays the same.'
+  flat:{min:3,max:60,step:0.1},
+  power:{min:40,max:800,step:1},
+  slope:{min:3,max:60,step:0.1}
 };
 function setMode(mode){
   S.mode=mode;
   const g=RANGES[mode];
-  $('speed-label').textContent=g.label;
-  $('mode-hint').textContent=HINTS[mode];
+  $('speed-label').textContent=t('f_'+mode);
+  $('mode-hint').textContent=t('h_'+mode);
   FIELDS.filter(c=>c.speedField).forEach(c=>{
     c.min=g.min; c.max=g.max; c.step=g.step;
     const who=c.id[0].toUpperCase();
     ['-n','-r'].forEach(sfx=>{
       const e=$(c.id+sfx); if(!e) return;
       e.min=g.min; e.max=g.max; e.step=g.step;
-      e.setAttribute('aria-label',g.aria.replace('X',who));
+      e.setAttribute('aria-label',t('x_'+mode).replace('X',who));
     });
   });
 }
@@ -582,26 +806,26 @@ function splitCell(r){
 function renderTable(){
   const byTime=S.mode!=='slope';
   const rows=[
-    ['Speed on the climb',r=>(r.v*3.6).toFixed(2)+' km/h'],
-    ['Time to the finish',r=>fmtClock(r.T)],
-    ['Leg power',r=>r.coast?'0 W (coasting)':Math.round(r.P)+' W'],
-    ['Power per kg of rider',r=>r.coast?'–':(r.P/r.rider).toFixed(2)+' W/kg'],
-    ['Total mass (rider + bike)',r=>r.m.toFixed(1)+' kg'],
-    ['Energy at the pedals',r=>Math.round(r.E)+' kJ'],
-    [byTime?'Time cost of 1 extra kg':'Power cost of 1 extra kg',r=>'+'+r.plus.val.toFixed(r.plus.type==='time'&&r.plus.val<10?2:1)+(r.plus.type==='time'?' s':' W')]
+    [t('t_speed'),r=>(r.v*3.6).toFixed(2)+' km/h'],
+    [t('t_time'),r=>fmtClock(r.T)],
+    [t('t_power'),r=>r.coast?t('t_coast'):Math.round(r.P)+' W'],
+    [t('t_wkg'),r=>r.coast?'–':(r.P/r.rider).toFixed(2)+' W/kg'],
+    [t('t_mass'),r=>r.m.toFixed(1)+' kg'],
+    [t('t_energy'),r=>Math.round(r.E)+' kJ'],
+    [byTime?t('t_pluskt'):t('t_plusp'),r=>'+'+r.plus.val.toFixed(r.plus.type==='time'&&r.plus.val<10?2:1)+(r.plus.type==='time'?' s':' W')]
   ];
-  let h='<thead><tr><th scope="col">Per rider</th>'+R.map((r,i)=>'<th scope="col" class="c'+i+'">'+esc(r.name)+'</th>').join('')+'</tr></thead><tbody>';
+  let h='<thead><tr><th scope="col">'+t('t_rider')+'</th>'+R.map((r,i)=>'<th scope="col" class="c'+i+'">'+esc(r.name)+'</th>').join('')+'</tr></thead><tbody>';
   rows.forEach(x=>{ h+='<tr><th scope="row">'+x[0]+'</th>'+R.map(r=>'<td>'+x[1](r)+'</td>').join('')+'</tr>'; });
-  h+='<tr><th scope="row">Where the effort goes<br><span class="split-txt">gravity · rolling · air</span></th>'+R.map(r=>'<td>'+splitCell(r)+'</td>').join('')+'</tr></tbody>';
+  h+='<tr><th scope="row">'+t('t_where')+'<br><span class="split-txt">'+t('t_split')+'</span></th>'+R.map(r=>'<td>'+splitCell(r)+'</td>').join('')+'</tr></tbody>';
   $('tbl').innerHTML=h;
 }
 function render(){
   const win=R[0].T<=R[1].T?0:1, lo=1-win, d=Math.abs(R[0].T-R[1].T), tie=d<0.05;
   $('verdict').style.setProperty('--win',tie?'var(--acc)':COL[win]);
-  $('v-who').textContent=tie?'Dead heat':R[win].name+' arrives first';
+  $('v-who').textContent=tie?t('v_tie'):t('v_first',R[win].name);
   $('v-gap').textContent=tie
-    ? 'Both riders reach the finish together.'
-    : R[lo].name+' is still '+fmtDist(S.dist*1000*(1-R[win].T/R[lo].T))+' from the finish when '+R[win].name+' crosses the line.';
+    ? t('v_tiegap')
+    : t('v_gap',R[lo].name,fmtDist(S.dist*1000*(1-R[win].T/R[lo].T)),R[win].name);
   setHero(d);
   const Tm=Math.max(R[0].T,R[1].T);
   [0,1].forEach(i=>{
@@ -609,9 +833,9 @@ function render(){
     $('tb'+i).style.width=(R[i].T/Tm*100)+'%';
   });
   const el=S.dist*1000*Math.sin(Math.atan(S.grade/100));
-  $('course-info').textContent=(Math.abs(el)<0.5?'Flat course':(el>0?'Climb +':'Descent −')+Math.round(Math.abs(el))+' m')+' over '+S.dist+' km. The slope in the replay is drawn steeper than it is.';
+  $('course-info').textContent=t('ci_over',Math.abs(el)<0.5?t('ci_flat'):(el>0?t('ci_climb'):t('ci_desc'))+Math.round(Math.abs(el))+' m',S.dist);
   renderTable();
-  $('race').setAttribute('aria-label','Animated replay: '+(tie?'dead heat':R[win].name+' finishes '+heroParts(d).num+' '+heroParts(d).unit.replace(' : ',':')+' ahead of '+R[lo].name));
+  $('race').setAttribute('aria-label',tie?t('ra_tie'):t('ra_win',R[win].name,heroParts(d).num,heroParts(d).unit.replace(' : ',':'),R[lo].name));
 }
 function update(){
   R=S.riders.map(evaluate);
@@ -723,13 +947,13 @@ function markers(c){
   c.font='500 '+fs+'px '+MONO; c.textAlign='center';
   c.strokeStyle='rgba(255,255,255,.75)'; c.lineWidth=2;
   c.beginPath(); c.moveTo(g.sx,roadTop(g.sx)); c.lineTo(g.sx,roadBot(g.sx)); c.stroke();
-  c.fillStyle='rgba(244,240,255,.85)'; c.fillText('START',g.sx,roadTop(g.sx)-8);
+  c.fillStyle='rgba(244,240,255,.85)'; c.fillText(t('start'),g.sx,roadTop(g.sx)-8);
   const px=g.fx, pb=roadBot(px)-g.Rw*0.2, pt=roadTop(px)-g.Rw*4.4, q=g.Rw*0.42;
   c.strokeStyle='#f4f0ff'; c.lineWidth=2.5; c.beginPath(); c.moveTo(px,pb); c.lineTo(px,pt); c.stroke();
   for(let i=0;i<4;i++) for(let j=0;j<3;j++){ c.fillStyle=(i+j)%2?'#fff':'#0a0a45'; c.fillRect(px+i*q,pt+j*q,q,q); }
   const el=S.dist*1000*Math.sin(Math.atan(S.grade/100));
   c.textAlign='right'; c.fillStyle='#7df9ff';
-  c.fillText('FINISH'+(Math.abs(el)>=1?(el>0?'  +':'  −')+Math.round(Math.abs(el))+' m':''),px-8,pt+q*1.5+4);
+  c.fillText(t('finish')+(Math.abs(el)>=1?(el>0?'  +':'  −')+Math.round(Math.abs(el))+' m':''),px-8,pt+q*1.5+4);
 }
 
 function seg(c,a,b,w,col){ c.strokeStyle=col; c.lineWidth=w; c.beginPath(); c.moveTo(a[0],a[1]); c.lineTo(b[0],b[1]); c.stroke(); }
@@ -817,7 +1041,7 @@ function hud(f){
 }
 const wRps=i=>Math.min(R[i].v/(6.2832*0.34),3);
 const cRps=i=>clamp(wRps(i)/1.15,0.7,1.6);
-function syncPlay(){ $('btn-play').textContent=playing?'Pause':'Play'; }
+function syncPlay(){ $('btn-play').textContent=playing?t('pause'):t('play'); }
 let last=performance.now();
 function frame(now){
   const dt=Math.min(0.1,(now-last)/1000); last=now;
@@ -857,11 +1081,29 @@ document.querySelectorAll('input[name=mode]').forEach(el=>el.addEventListener('c
   FIELDS.filter(c=>c.speedField).forEach(c=>c.show());
   update();
 }));
-[0,1].forEach(i=>$('ab'[i]+'-name').addEventListener('input',e=>{ S.riders[i].name=e.target.value.trim()||DEF_NAMES[i]; update(); }));
+[0,1].forEach(i=>$('ab'[i]+'-name').addEventListener('input',e=>{ const v=e.target.value.trim(); customName[i]=!!v; S.riders[i].name=v||t(DEF_KEYS[i]); update(); }));
+function applyLang(){
+  document.documentElement.lang=lang;
+  document.querySelectorAll('[data-i18n]').forEach(e=>{ e.textContent=t(e.getAttribute('data-i18n')); });
+  document.querySelectorAll('[data-i18n-aria]').forEach(e=>{ e.setAttribute('aria-label',t(e.getAttribute('data-i18n-aria'))); });
+  document.querySelectorAll('[data-i18n-content]').forEach(e=>{ e.setAttribute('content',t(e.getAttribute('data-i18n-content'))); });
+  document.querySelectorAll('#lang button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.lang===lang)));
+  [0,1].forEach(i=>{
+    if(!customName[i]){ S.riders[i].name=t(DEF_KEYS[i]); $('ab'[i]+'-name').value=S.riders[i].name; }
+  });
+  setMode(S.mode);
+  syncPlay();
+}
+document.querySelectorAll('#lang button').forEach(b=>b.addEventListener('click',()=>{
+  if(b.dataset.lang===lang) return;
+  lang=b.dataset.lang;
+  try{ localStorage.setItem('cd-lang',lang); }catch(e){}
+  applyLang(); update();
+}));
 setMode('flat');
+applyLang();
 update();
 layout();
-syncPlay();
 if(window.ResizeObserver) new ResizeObserver(layout).observe(cv.parentElement); else window.addEventListener('resize',layout);
 if('IntersectionObserver' in window) new IntersectionObserver(e=>{ vis=e[0].isIntersecting; if(vis) dirty=true; }).observe(cv);
 if(document.fonts&&document.fonts.ready) document.fonts.ready.then(()=>{ dirty=true; });

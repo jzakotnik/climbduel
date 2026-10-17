@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Impressum – Climb Duel</title>
+<title data-i18n="title">Impressum – Climb Duel</title>
 <meta name="robots" content="noindex">
 <meta name="theme-color" content="#1b1bb5">
 <link rel="icon" href="favicon.ico" sizes="48x48">
@@ -15,16 +15,42 @@ main{max-width:640px;margin:0 auto}
 h1{margin:0 0 16px;color:#d6ff3f}
 p{margin:0 0 16px;color:#c6c9ff}
 a{color:#7df9ff}
-a:focus-visible{outline:2px solid #7df9ff;outline-offset:2px}
+.lang{display:flex;justify-content:flex-end;gap:6px;margin-bottom:12px}
+.lang button{font:500 .78rem/1 ui-monospace,Menlo,Consolas,monospace;padding:7px 12px;border-radius:999px;border:1px solid rgba(255,255,255,.22);background:transparent;color:#fff;cursor:pointer}
+.lang button[aria-pressed=true]{background:#fff;color:#0a0a45;border-color:#fff}
+a:focus-visible,button:focus-visible{outline:2px solid #7df9ff;outline-offset:2px}
 </style>
 </head>
 <body>
 <main>
+<nav class="lang" id="lang" aria-label="Language"><button type="button" data-lang="en" lang="en" title="English">EN</button><button type="button" data-lang="de" lang="de" title="Deutsch">DE</button></nav>
 <h1>Impressum</h1>
-<p>Climb Duel is a private, non-commercial project by Jure Zakotnik.</p>
-<p>Contact and further information: <a href="https://github.com/jzakotnik" rel="noopener">github.com/jzakotnik</a></p>
-<p>The source code is available at <a href="https://github.com/jzakotnik/climbduel" rel="noopener">github.com/jzakotnik/climbduel</a> under the MIT license.</p>
-<p><a href="./">← Back to Climb Duel</a></p>
+<p data-i18n="p1">Climb Duel is a private, non-commercial project by Jure Zakotnik.</p>
+<p><span data-i18n="p2">Contact and further information:</span> <a href="https://github.com/jzakotnik" rel="noopener">github.com/jzakotnik</a></p>
+<p><span data-i18n="p3">The source code is available at</span> <a href="https://github.com/jzakotnik/climbduel" rel="noopener">github.com/jzakotnik/climbduel</a> <span data-i18n="p4">under the MIT license.</span></p>
+<p><a href="./" data-i18n="back">← Back to Climb Duel</a></p>
 </main>
+<script>
+(function(){
+var D={en:{},de:{
+title:'Impressum – Climb Duel',
+p1:'Climb Duel ist ein privates, nicht-kommerzielles Projekt von Jure Zakotnik.',
+p2:'Kontakt und weitere Informationen:',
+p3:'Der Quellcode ist verfügbar unter',
+p4:'unter der MIT-Lizenz.',
+back:'← Zurück zu Climb Duel'}};
+var els=document.querySelectorAll('[data-i18n]');
+els.forEach(function(e){D.en[e.getAttribute('data-i18n')]=e.textContent;});
+var lang='en';
+try{var q=new URLSearchParams(location.search).get('lang'),st=q||localStorage.getItem('cd-lang');if(st==='de'||st==='en')lang=st;}catch(e){}
+function apply(){
+  document.documentElement.lang=lang;
+  els.forEach(function(e){e.textContent=D[lang][e.getAttribute('data-i18n')];});
+  document.querySelectorAll('#lang button').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.lang===lang));});
+}
+document.querySelectorAll('#lang button').forEach(function(b){b.addEventListener('click',function(){lang=b.dataset.lang;try{localStorage.setItem('cd-lang',lang);}catch(e){}apply();});});
+apply();
+})();
+</script>
 </body>
 </html>
