@@ -11,6 +11,7 @@ Live: <https://openlibry.de/derjure/cycleduel/>
 - Three ways to describe a rider: **flat pace** (speed on the flat), **watts**, or **climb speed**
 - Adjustable CdA, rolling resistance, drivetrain efficiency and air density
 - Animated replay of the climb
+- English and German, switchable at the top of the page (default English; the choice is remembered in the browser, or force it with `?lang=de`)
 - Static, dependency-free single page: no build step, no tracking, no third-party requests (fonts are self-hosted)
 - Installable as a PWA, with SEO and sharing metadata
 
