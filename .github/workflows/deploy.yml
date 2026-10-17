@@ -25,14 +25,14 @@ jobs:
           chmod 600 ~/.ssh/id_deploy
           printf '%s\n' "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
 
-      - name: Deploy with rsync
+      - name: Deploy with scp
         env:
           DEPLOY_USER: ${{ vars.DEPLOY_USER || 'jure' }}
           DEPLOY_HOST: ${{ vars.DEPLOY_HOST || 'openlibry.de' }}
           DEPLOY_PATH: ${{ vars.DEPLOY_PATH || '/var/www/html/derjure/cycleduel' }}
         run: |
-          rsync -rltvz --delete \
-            --exclude='.git/' --exclude='.github/' --exclude='.gitignore' \
-            --exclude='README.md' --exclude='LICENSE' --exclude='set-domain.sh' \
-            -e "ssh -i ~/.ssh/id_deploy" \
-            ./ "$DEPLOY_USER@$DEPLOY_HOST:$DEPLOY_PATH/"
+          mkdir _site
+          tar --exclude=./_site --exclude=./.git --exclude=./.github \
+              --exclude=./.gitignore --exclude=./README.md --exclude=./LICENSE \
+              --exclude=./set-domain.sh -cf - . | tar -xf - -C _site
+          scp -r -i ~/.ssh/id_deploy _site/. "$DEPLOY_USER@$DEPLOY_HOST:$DEPLOY_PATH/"
