@@ -100,6 +100,10 @@ p{margin:0}
 
 .controls{display:flex;flex-direction:column;gap:12px;min-width:0;padding:clamp(14px,2.4vw,22px);border-radius:22px;border:1px solid var(--line);background:var(--panel)}
 .course{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.gpx{display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px;font:400 .74rem/1.3 var(--mono);color:var(--muted)}
+.gpx-btn{font:inherit;color:var(--acc);background:none;border:0;padding:2px 0;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+.gpx-btn:focus-visible{outline:2px solid var(--acc);outline-offset:3px;border-radius:4px}
+#gpx-msg.err{color:#ff8a8a}
 .cf{display:flex;flex-direction:column;gap:4px;min-width:0}
 .cf label,.rl{font:400 .74rem/1.2 var(--mono);color:var(--muted);letter-spacing:.02em}
 .in{width:100%;min-width:0;text-align:center;font:500 1.02rem/1.2 var(--mono);font-variant-numeric:tabular-nums;color:var(--text);background:rgba(255,255,255,.1);border:1px solid var(--line);border-radius:10px;padding:8px 6px}
@@ -328,6 +332,7 @@ footer a{color:inherit;text-decoration:underline}footer a:focus-visible{outline:
         <div class="cf"><label for="dist-n">Distance on road (km)</label><input class="in" id="dist-n" type="number" inputmode="decimal"><input type="range" id="dist-r" aria-label="Distance in km"></div>
         <div class="cf"><label for="grade-n">Average grade (%)</label><input class="in" id="grade-n" type="number" inputmode="decimal"><input type="range" id="grade-r" aria-label="Grade in percent"></div>
       </div>
+      <div class="gpx"><input type="file" id="gpx-file" accept=".gpx,application/gpx+xml,text/xml" hidden><button type="button" class="gpx-btn" id="gpx-btn">Or import a GPX file</button><span id="gpx-msg" role="status"></span></div>
       <fieldset class="seg">
         <legend>What you enter for each rider…</legend>
         <label><input type="radio" name="mode" value="flat" checked><span>Flat pace</span></label>
@@ -839,6 +844,59 @@ $('btn-play').addEventListener('click',()=>{ if(!playing&&prog>=1) prog=0; playi
 $('btn-replay').addEventListener('click',()=>{ prog=0; hold=0; playing=true; syncPlay(); dirty=true; });
 $('scrub').addEventListener('input',e=>{ prog=parseFloat(e.target.value)/1000; playing=false; syncPlay(); dirty=true; });
 $('pspeed').addEventListener('change',e=>{ pmul=parseFloat(e.target.value); });
+
+/* ---------- GPX import: distance and average grade from the track (parsed locally, nothing is uploaded) ---------- */
+function parseGpx(text){
+  const doc=new DOMParser().parseFromString(text,'application/xml');
+  if(doc.getElementsByTagName('parsererror').length) throw new Error('Not a valid GPX file.');
+  let nodes=[...doc.getElementsByTagName('trkpt')];
+  if(!nodes.length) nodes=[...doc.getElementsByTagName('rtept')];
+  const pts=nodes.map(n=>{
+    const e=n.getElementsByTagName('ele')[0];
+    return {lat:parseFloat(n.getAttribute('lat')),lon:parseFloat(n.getAttribute('lon')),ele:e?parseFloat(e.textContent):NaN};
+  }).filter(p=>isFinite(p.lat)&&isFinite(p.lon));
+  if(pts.length<2) throw new Error('No track points found.');
+  const withEle=pts.filter(p=>isFinite(p.ele));
+  if(withEle.length<pts.length*0.9) throw new Error('This file has no elevation data.');
+  /* cumulative horizontal distance (haversine) */
+  const cum=[0]; let up=0;
+  for(let i=1;i<pts.length;i++){
+    const a=pts[i-1], b=pts[i], r=Math.PI/180, R0=6371008.8;
+    const h=Math.sin((b.lat-a.lat)*r/2)**2+Math.cos(a.lat*r)*Math.cos(b.lat*r)*Math.sin((b.lon-a.lon)*r/2)**2;
+    cum.push(cum[i-1]+2*R0*Math.asin(Math.min(1,Math.sqrt(h))));
+  }
+  const H=cum[cum.length-1];
+  if(H<200) throw new Error('Track is too short.');
+  /* GPS elevation is noisy: average the first and last ~150 m (or 10 % of the track) before taking the net climb */
+  const w=Math.min(150,H*0.1);
+  const avg=(from,to)=>{ let s=0,n=0; pts.forEach((p,i)=>{ if(isFinite(p.ele)&&cum[i]>=from&&cum[i]<=to){ s+=p.ele; n++; } }); return n?s/n:NaN; };
+  const net=avg(H-w,H)-avg(0,w);
+  /* ascent above 3 m noise threshold, for the summary only */
+  let ref=withEle[0].ele; withEle.forEach(p=>{ if(p.ele-ref>3){ up+=p.ele-ref; ref=p.ele; } else if(p.ele<ref) ref=p.ele; });
+  return {H,net,up};
+}
+(function(){
+  const btn=$('gpx-btn'), file=$('gpx-file'), msg=$('gpx-msg');
+  const say=(t,err)=>{ msg.textContent=t; msg.className=err?'err':''; };
+  btn.addEventListener('click',()=>file.click());
+  file.addEventListener('change',()=>{
+    const f=file.files[0]; if(!f) return;
+    const rd=new FileReader();
+    rd.onload=()=>{
+      try{
+        const g=parseGpx(String(rd.result));
+        const grade=g.net/g.H*100, road=Math.sqrt(g.H*g.H+g.net*g.net)/1000;
+        const dc=FIELDS.find(c=>c.id==='dist'), gc=FIELDS.find(c=>c.id==='grade');
+        dc.set(clamp(Math.round(road*10)/10,dc.min,dc.max)); gc.set(clamp(Math.round(grade*10)/10,gc.min,gc.max));
+        dc.show(); gc.show(); update();
+        say(f.name+': '+road.toFixed(1)+' km, '+(g.net>=0?'+':'−')+Math.round(Math.abs(g.net))+' m net, '+grade.toFixed(1)+' % average'+(g.up>Math.abs(g.net)*1.5?' (track has rolling terrain, so the average is net climb over the whole route)':'')+'.');
+      }catch(e){ say(e.message||'Could not read this file.',true); }
+      file.value='';
+    };
+    rd.onerror=()=>{ say('Could not read this file.',true); };
+    rd.readAsText(f);
+  });
+})();
 
 /* ---------- init ---------- */
 FIELDS.forEach(makeField);
