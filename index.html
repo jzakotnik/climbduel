@@ -337,7 +337,7 @@ footer a{color:inherit;text-decoration:underline}footer a:focus-visible{outline:
         <div class="cf"><label for="dist-n" data-i18n="l_dist">Distance on road (km)</label><input class="in" id="dist-n" type="number" inputmode="decimal"><input type="range" id="dist-r" data-i18n-aria="a_dist" aria-label="Distance in km"></div>
         <div class="cf"><label for="grade-n" data-i18n="l_grade">Average grade (%)</label><input class="in" id="grade-n" type="number" inputmode="decimal"><input type="range" id="grade-r" data-i18n-aria="a_grade" aria-label="Grade in percent"></div>
       </div>
-      <div class="gpx"><input type="file" id="gpx-file" accept=".gpx,application/gpx+xml,text/xml" hidden><button type="button" class="gpx-btn" id="gpx-btn">Or import a GPX file</button><span id="gpx-msg" role="status"></span></div>
+      <div class="gpx"><input type="file" id="gpx-file" accept=".gpx,application/gpx+xml,text/xml" hidden><button type="button" class="gpx-btn" id="gpx-btn" data-i18n="g_btn">Or import a GPX file</button><span id="gpx-msg" role="status"></span></div>
       <fieldset class="seg">
         <legend data-i18n="legend">What you enter for each rider…</legend>
         <label><input type="radio" name="mode" value="flat" checked><span data-i18n="m_flat">Flat pace</span></label>
@@ -439,6 +439,14 @@ const DEF_KEYS=['riderA','riderB'];
 /* ---------- localisation (en default, de) ---------- */
 const I18N={
  "en": {
+  "g_btn": "Or import a GPX file",
+  "g_invalid": "Not a valid GPX file.",
+  "g_nopts": "No track points found.",
+  "g_noele": "This file has no elevation data.",
+  "g_short": "Track is too short.",
+  "g_read": "Could not read this file.",
+  "g_ok": "{0}: {1} km, {2} m net, {3} % average",
+  "g_okroll": "{0}: {1} km, {2} m total ascent, {3} % average (hilly or looped track: total ascent over total distance)",
   "title": "Climb Duel – Cycling Climb Time Calculator",
   "desc": "Compare two cyclists on the same hill. Enter distance, grade, weights and speed or watts to see who arrives first and by how long, in an animated replay.",
   "ogalt": "Two cyclists racing up a hill in the Climb Duel calculator, with the arrival time gap shown above",
@@ -547,6 +555,14 @@ const I18N={
   "fl_rho": "Air density"
  },
  "de": {
+  "g_btn": "Oder eine GPX-Datei importieren",
+  "g_invalid": "Keine gültige GPX-Datei.",
+  "g_nopts": "Keine Trackpunkte gefunden.",
+  "g_noele": "Diese Datei enthält keine Höhendaten.",
+  "g_short": "Der Track ist zu kurz.",
+  "g_read": "Diese Datei konnte nicht gelesen werden.",
+  "g_ok": "{0}: {1} km, {2} m netto, {3} % im Schnitt",
+  "g_okroll": "{0}: {1} km, {2} m Gesamtanstieg, {3} % im Schnitt (welliger oder geschlossener Track: Gesamtanstieg über Gesamtstrecke)",
   "title": "Climb Duel – Anstiegszeit-Rechner für Radfahrer",
   "desc": "Vergleiche zwei Radfahrer am selben Berg. Gib Strecke, Steigung, Gewicht und Tempo oder Watt ein und sieh in einer animierten Wiederholung, wer zuerst oben ist und mit welchem Abstand.",
   "ogalt": "Zwei Radfahrer fahren im Climb-Duel-Rechner einen Berg hinauf, darüber der Zeitabstand im Ziel",
@@ -1070,18 +1086,24 @@ $('scrub').addEventListener('input',e=>{ prog=parseFloat(e.target.value)/1000; p
 $('pspeed').addEventListener('change',e=>{ pmul=parseFloat(e.target.value); });
 
 /* ---------- GPX import: distance and average grade from the track (parsed locally, nothing is uploaded) ---------- */
+let gpxMsg=null;
+function paintGpx(){
+  const el=$('gpx-msg'); if(!el) return;
+  el.textContent=gpxMsg?t(gpxMsg.m.key,...(gpxMsg.m.args||[]))+(gpxMsg.m.args?'.':''):'';
+  el.className=gpxMsg&&gpxMsg.err?'err':'';
+}
 function parseGpx(text){
   const doc=new DOMParser().parseFromString(text,'application/xml');
-  if(doc.getElementsByTagName('parsererror').length) throw new Error('Not a valid GPX file.');
+  if(doc.getElementsByTagName('parsererror').length) throw new Error('g_invalid');
   let nodes=[...doc.getElementsByTagName('trkpt')];
   if(!nodes.length) nodes=[...doc.getElementsByTagName('rtept')];
   const pts=nodes.map(n=>{
     const e=n.getElementsByTagName('ele')[0];
     return {lat:parseFloat(n.getAttribute('lat')),lon:parseFloat(n.getAttribute('lon')),ele:e?parseFloat(e.textContent):NaN};
   }).filter(p=>isFinite(p.lat)&&isFinite(p.lon));
-  if(pts.length<2) throw new Error('No track points found.');
+  if(pts.length<2) throw new Error('g_nopts');
   const withEle=pts.filter(p=>isFinite(p.ele));
-  if(withEle.length<pts.length*0.9) throw new Error('This file has no elevation data.');
+  if(withEle.length<pts.length*0.9) throw new Error('g_noele');
   /* cumulative horizontal distance (haversine) */
   const cum=[0]; let up=0;
   for(let i=1;i<pts.length;i++){
@@ -1090,7 +1112,7 @@ function parseGpx(text){
     cum.push(cum[i-1]+2*R0*Math.asin(Math.min(1,Math.sqrt(h))));
   }
   const H=cum[cum.length-1];
-  if(H<200) throw new Error('Track is too short.');
+  if(H<200) throw new Error('g_short');
   /* GPS elevation is noisy: average the first and last ~150 m (or 10 % of the track) before taking the net climb */
   const w=Math.min(150,H*0.1);
   const avg=(from,to)=>{ let s=0,n=0; pts.forEach((p,i)=>{ if(isFinite(p.ele)&&cum[i]>=from&&cum[i]<=to){ s+=p.ele; n++; } }); return n?s/n:NaN; };
@@ -1101,7 +1123,7 @@ function parseGpx(text){
 }
 (function(){
   const btn=$('gpx-btn'), file=$('gpx-file'), msg=$('gpx-msg');
-  const say=(t,err)=>{ msg.textContent=t; msg.className=err?'err':''; };
+  const say=(m,err)=>{ gpxMsg=m?{m,err}:null; paintGpx(); };
   btn.addEventListener('click',()=>file.click());
   file.addEventListener('change',()=>{
     const f=file.files[0]; if(!f) return;
@@ -1109,15 +1131,16 @@ function parseGpx(text){
     rd.onload=()=>{
       try{
         const g=parseGpx(String(rd.result));
-        const grade=g.net/g.H*100, road=Math.sqrt(g.H*g.H+g.net*g.net)/1000;
+        const roll=g.up>Math.abs(g.net)*1.5, rise=roll?g.up:g.net;
+        const grade=rise/g.H*100, road=Math.sqrt(g.H*g.H+rise*rise)/1000;
         const dc=FIELDS.find(c=>c.id==='dist'), gc=FIELDS.find(c=>c.id==='grade');
         dc.set(clamp(Math.round(road*10)/10,dc.min,dc.max)); gc.set(clamp(Math.round(grade*10)/10,gc.min,gc.max));
         dc.show(); gc.show(); update();
-        say(f.name+': '+road.toFixed(1)+' km, '+(g.net>=0?'+':'−')+Math.round(Math.abs(g.net))+' m net, '+grade.toFixed(1)+' % average'+(g.up>Math.abs(g.net)*1.5?' (track has rolling terrain, so the average is net climb over the whole route)':'')+'.');
-      }catch(e){ say(e.message||'Could not read this file.',true); }
+        say({key:roll?'g_okroll':'g_ok',args:[f.name,road.toFixed(1),(rise>=0?'+':'−')+Math.round(Math.abs(rise)),grade.toFixed(1)]});
+      }catch(e){ say({key:I18N.en[e.message]?e.message:'g_read'},true); }
       file.value='';
     };
-    rd.onerror=()=>{ say('Could not read this file.',true); };
+    rd.onerror=()=>{ say({key:'g_read'},true); };
     rd.readAsText(f);
   });
 })();
@@ -1151,6 +1174,7 @@ function applyLang(){
   });
   setMode(S.mode);
   syncPlay();
+  paintGpx();
 }
 document.querySelectorAll('#lang button').forEach(b=>b.addEventListener('click',()=>{
   if(b.dataset.lang===lang) return;
