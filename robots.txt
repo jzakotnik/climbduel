@@ -2,4 +2,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: derjure.de/sitemap.xml
+Sitemap: https://climbduel.derjure.de/sitemap.xml
